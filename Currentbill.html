@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Current Bill</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f0f0f0;
+        }
+        .box {
+            width: 360px;
+            background: #fff;
+            margin: 30px auto;
+            padding: 20px;
+            border: 2px solid black;
+        }
+        h3 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 6px;
+            margin-top: 4px;
+        }
+        button {
+            width: 48%;
+            padding: 8px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .result {
+            margin-top: 15px;
+            background: #e9ffe9;
+            padding: 10px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <h3>Current Bill</h3>
+
+        <label>Consumer No</label>
+        <input id="cno">
+
+        <label>Name</label>
+        <input id="name">
+
+        <label>Previous Reading</label>
+        <input type="number" id="prev">
+
+        <label>Current Reading</label>
+        <input type="number" id="curr">
+
+        <button onclick="calculate()">CALCULATE</button>
+        <button onclick="clearAll()">CLEAR</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculate() {
+            let prev = Number(document.getElementById("prev").value);
+            let curr = Number(document.getElementById("curr").value);
+
+            if (curr < prev) {
+                alert("Current reading must be greater");
+                return;
+            }
+
+            let units = curr - prev;
+            let amount = 0;
+
+            if (units <= 200) {
+                amount = units * 1.25;
+            }
+            else if (units <= 300) {
+                amount = 200 * 1.25 + (units - 200) * 1.50;
+            }
+            else if (units <= 400) {
+                amount = 200 * 1.25 + 100 * 1.50 + (units - 300) * 1.75;
+            }
+            else {
+                amount = 200 * 1.25 + 100 * 1.50 + 100 * 1.75 + (units - 400) * 2;
+            }
+            let surcharge = amount * 0.05;
+            let total = amount + surcharge;
+
+            document.getElementById("result").innerHTML =
+                "Units : " + units + "<br>" +
+                "Amount : ₹" + amount.toFixed(2) + "<br>" +
+                "Surcharge : ₹" + surcharge.toFixed(2) + "<br><hr>" +
+                "<b>Total Bill : ₹" + total.toFixed(2) + "</b>";
+        }
+        function clearAll() {
+            document.getElementById("cno").value = "";
+            document.getElementById("name").value = "";
+            document.getElementById("prev").value = "";
+            document.getElementById("curr").value = "";
+            document.getElementById("result").innerHTML = "";
+        }
+    </script>
+
+</body>
+
+</html>
